@@ -15,6 +15,7 @@ from app.core.config import settings
 from app.core.security import get_password_hash
 from app.db import repository as crud
 from app.schemas import Message, NewPassword, Token, UserPublic
+from app.services import authenticate
 from app.utils.email import (
     generate_password_reset_token,
     generate_reset_password_email,
@@ -32,7 +33,7 @@ def login_access_token(
     """
     OAuth2 compatible token login, get an access token for future requests
     """
-    user = crud.authenticate(
+    user = authenticate(
         session=session, email=form_data.username, password=form_data.password
     )
     if not user:
