@@ -4,7 +4,7 @@ from typing import Any
 from fastapi import APIRouter, HTTPException
 from sqlmodel import func, select
 
-from app.api.v1.dependencies import CurrentUser, SessionDep
+from app.api.v1.dependencies import CurrentUserDep, SessionDep
 from app.models import Item
 from app.schemas import ItemCreate, ItemPublic, ItemsPublic, ItemUpdate, Message
 
@@ -13,12 +13,11 @@ router = APIRouter(prefix="/items", tags=["items"])
 
 @router.get("/", response_model=ItemsPublic)
 def read_items(
-    session: SessionDep, current_user: CurrentUser, skip: int = 0, limit: int = 100
+    session: SessionDep, current_user: CurrentUserDep, skip: int = 0, limit: int = 100
 ) -> Any:
     """
     Retrieve items.
     """
-
     if current_user.is_superuser:
         count_statement = select(func.count()).select_from(Item)
         count = session.exec(count_statement).one()
@@ -45,7 +44,7 @@ def read_items(
 
 
 @router.get("/{id}", response_model=ItemPublic)
-def read_item(session: SessionDep, current_user: CurrentUser, id: uuid.UUID) -> Any:
+def read_item(session: SessionDep, current_user: CurrentUserDep, id: uuid.UUID) -> Any:
     """
     Get item by ID.
     """
@@ -59,7 +58,7 @@ def read_item(session: SessionDep, current_user: CurrentUser, id: uuid.UUID) -> 
 
 @router.post("/", response_model=ItemPublic)
 def create_item(
-    *, session: SessionDep, current_user: CurrentUser, item_in: ItemCreate
+    *, session: SessionDep, current_user: CurrentUserDep, item_in: ItemCreate
 ) -> Any:
     """
     Create new item.
@@ -75,7 +74,7 @@ def create_item(
 def update_item(
     *,
     session: SessionDep,
-    current_user: CurrentUser,
+    current_user: CurrentUserDep,
     id: uuid.UUID,
     item_in: ItemUpdate,
 ) -> Any:
@@ -97,7 +96,7 @@ def update_item(
 
 @router.delete("/{id}")
 def delete_item(
-    session: SessionDep, current_user: CurrentUser, id: uuid.UUID
+    session: SessionDep, current_user: CurrentUserDep, id: uuid.UUID
 ) -> Message:
     """
     Delete an item.

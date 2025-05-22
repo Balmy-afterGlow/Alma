@@ -6,7 +6,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.security import OAuth2PasswordRequestForm
 
 from app.api.v1.dependencies import (
-    CurrentUser,
+    CurrentUserDep,
     SessionDep,
     get_current_active_superuser,
 )
@@ -49,7 +49,7 @@ def login_access_token(
 
 
 @router.post("/login/test-token", response_model=UserPublic)
-def test_token(current_user: CurrentUser) -> Any:
+def test_token(current_user: CurrentUserDep) -> Any:
     """
     Test access token
     """
