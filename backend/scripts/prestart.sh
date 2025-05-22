@@ -7,6 +7,6 @@ set -x
 
 python app/db/initial/db_start_test.py
 
-# alembic upgrade head
+alembic upgrade head
 
 python app/db/initial/initial_data_in_db.py
