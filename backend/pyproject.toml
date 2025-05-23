@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Alternating Lightweight Multi-Agent Platform"
 requires-python = ">=3.10,<4.0"
 dependencies = [
+    "git+https://github.com/Balmy-afterGlow/AutoAgent.git",
     "fastapi[standard]<1.0.0,>=0.114.2",
     "python-multipart<1.0.0,>=0.0.7",
     "email-validator<3.0.0.0,>=2.1.0.post1",
