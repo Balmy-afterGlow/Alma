@@ -7,8 +7,6 @@ set -x
 
 python scripts/python_meta_script/db_start_test.py
 
-# alembic revision --autogenerate
-
 alembic upgrade head
 
 python scripts/python_meta_script/initial_data_in_db.py
