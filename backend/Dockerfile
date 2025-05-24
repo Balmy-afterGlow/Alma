@@ -5,14 +5,16 @@ ENV PYTHONBUFFERED=1
 WORKDIR /code/
 
 # Install git and pip-tools
-RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/* \
-    && pip install pip-tools
+RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 
-# Generate requirements.txt and install dependencies with BuildKit cache
+# Generate requirements.txt using mkreq.sh with BuildKit mounts
 RUN --mount=type=cache,target=/root/.cache/pip \
-    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    pip-compile pyproject.toml --output-file requirements.txt \
-    && pip install -r requirements.txt
+    --mount=type=bind,source=pyproject.toml,target=/code/pyproject.toml \
+    --mount=type=bind,source=scripts/python_meta_script/extract_dependencies.py,target=/code/extract_dependencies.py \
+    --mount=type=bind,source=scripts/mkreq.sh,target=/code/mkreq.sh,rw \
+    chmod +x /code/mkreq.sh && \
+    /code/mkreq.sh && \
+    pip install -r requirements.txt
 
 # Copy project files
 COPY ./pyproject.toml ./alembic.ini /code/
@@ -22,7 +24,7 @@ COPY ./app /code/app
 
 # Install the project with BuildKit cache
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install .
+    pip install --no-deps .
 
 ENV PYTHONPATH=/code
 

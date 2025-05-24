@@ -1,9 +1,11 @@
 import uuid
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .item import Item
 
 from pydantic import EmailStr
 from sqlmodel import Field, Relationship, SQLModel
-
-from .item import Item
 
 
 class User(SQLModel, table=True):

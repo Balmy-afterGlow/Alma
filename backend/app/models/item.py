@@ -1,8 +1,10 @@
 import uuid
+from typing import TYPE_CHECKING, Optional
+
+if TYPE_CHECKING:
+    from .user import User
 
 from sqlmodel import Field, Relationship, SQLModel
-
-from .user import User
 
 
 class Item(SQLModel, table=True):
@@ -12,4 +14,4 @@ class Item(SQLModel, table=True):
     owner_id: uuid.UUID = Field(
         foreign_key="user.id", nullable=False, ondelete="CASCADE"
     )
-    owner: "User | None" = Relationship(back_populates="items")
+    owner: Optional["User"] = Relationship(back_populates="items")

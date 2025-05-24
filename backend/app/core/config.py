@@ -24,8 +24,7 @@ def parse_cors(v: Any) -> list[str] | str:
 # 类属性名全大写会直接映射环境变量
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        # Use .env file (one level equal ./backend/)
-        env_file="./.env",
+        env_file="../.env",
         env_ignore_empty=True,
         extra="ignore",
     )
@@ -47,9 +46,9 @@ class Settings(BaseSettings):
     ENVIRONMENT: Literal["local", "staging", "production"] = "local"
 
     # CORS白名单
-    BACKEND_CORS_ORIGINS: Annotated[
-        list[AnyUrl] | str, BeforeValidator(parse_cors)
-    ] = []
+    BACKEND_CORS_ORIGINS: Annotated[list[AnyUrl] | str, BeforeValidator(parse_cors)] = (
+        []
+    )
 
     # 动态计算的模型字段
     @computed_field  # type: ignore[prop-decorator]
@@ -85,7 +84,7 @@ class Settings(BaseSettings):
             password=self.POSTGRES_PASSWORD,
             host=self.POSTGRES_SERVER,
             port=self.POSTGRES_PORT,
-            path=f"/{self.POSTGRES_DB}" if self.POSTGRES_DB else "",
+            path=self.POSTGRES_DB,
         )
 
     # 邮件服务器配置

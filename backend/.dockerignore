@@ -2,4 +2,3 @@ __pycache__
 app.egg.info
 *.pyc
 .mypy_cache
-.env

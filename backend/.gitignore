@@ -3,4 +3,3 @@ app.egg-info
 *.pyc
 .mypy_cache/
 logs/
-.env
