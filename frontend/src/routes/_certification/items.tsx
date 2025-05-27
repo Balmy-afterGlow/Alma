@@ -36,7 +36,7 @@ import {
     }
   }
   
-  export const Route = createFileRoute("/_layout/items")({
+  export const Route = createFileRoute("/_certification/items")({
     component: Items,
     validateSearch: (search) => itemsSearchSchema.parse(search),
   })

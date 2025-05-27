@@ -15,11 +15,11 @@ import { Route as SignupImport } from './routes/signup'
 import { Route as ResetPasswordImport } from './routes/reset-password'
 import { Route as RecoverPasswordImport } from './routes/recover-password'
 import { Route as LoginImport } from './routes/login'
-import { Route as LayoutImport } from './routes/_layout'
-import { Route as LayoutIndexImport } from './routes/_layout/index'
-import { Route as LayoutSettingsImport } from './routes/_layout/settings'
-import { Route as LayoutItemsImport } from './routes/_layout/items'
-import { Route as LayoutAdminImport } from './routes/_layout/admin'
+import { Route as CertificationImport } from './routes/_certification'
+import { Route as CertificationIndexImport } from './routes/_certification/index'
+import { Route as CertificationSettingsImport } from './routes/_certification/settings'
+import { Route as CertificationItemsImport } from './routes/_certification/items'
+import { Route as CertificationAdminImport } from './routes/_certification/admin'
 
 // Create/Update Routes
 
@@ -43,37 +43,37 @@ const LoginRoute = LoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const LayoutRoute = LayoutImport.update({
-  id: '/_layout',
+const CertificationRoute = CertificationImport.update({
+  id: '/_certification',
   getParentRoute: () => rootRoute,
 } as any)
 
-const LayoutIndexRoute = LayoutIndexImport.update({
+const CertificationIndexRoute = CertificationIndexImport.update({
   path: '/',
-  getParentRoute: () => LayoutRoute,
+  getParentRoute: () => CertificationRoute,
 } as any)
 
-const LayoutSettingsRoute = LayoutSettingsImport.update({
+const CertificationSettingsRoute = CertificationSettingsImport.update({
   path: '/settings',
-  getParentRoute: () => LayoutRoute,
+  getParentRoute: () => CertificationRoute,
 } as any)
 
-const LayoutItemsRoute = LayoutItemsImport.update({
+const CertificationItemsRoute = CertificationItemsImport.update({
   path: '/items',
-  getParentRoute: () => LayoutRoute,
+  getParentRoute: () => CertificationRoute,
 } as any)
 
-const LayoutAdminRoute = LayoutAdminImport.update({
+const CertificationAdminRoute = CertificationAdminImport.update({
   path: '/admin',
-  getParentRoute: () => LayoutRoute,
+  getParentRoute: () => CertificationRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_layout': {
-      preLoaderRoute: typeof LayoutImport
+    '/_certification': {
+      preLoaderRoute: typeof CertificationImport
       parentRoute: typeof rootRoute
     }
     '/login': {
@@ -92,21 +92,21 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupImport
       parentRoute: typeof rootRoute
     }
-    '/_layout/admin': {
-      preLoaderRoute: typeof LayoutAdminImport
-      parentRoute: typeof LayoutImport
+    '/_certification/admin': {
+      preLoaderRoute: typeof CertificationAdminImport
+      parentRoute: typeof CertificationImport
     }
-    '/_layout/items': {
-      preLoaderRoute: typeof LayoutItemsImport
-      parentRoute: typeof LayoutImport
+    '/_certification/items': {
+      preLoaderRoute: typeof CertificationItemsImport
+      parentRoute: typeof CertificationImport
     }
-    '/_layout/settings': {
-      preLoaderRoute: typeof LayoutSettingsImport
-      parentRoute: typeof LayoutImport
+    '/_certification/settings': {
+      preLoaderRoute: typeof CertificationSettingsImport
+      parentRoute: typeof CertificationImport
     }
-    '/_layout/': {
-      preLoaderRoute: typeof LayoutIndexImport
-      parentRoute: typeof LayoutImport
+    '/_certification/': {
+      preLoaderRoute: typeof CertificationIndexImport
+      parentRoute: typeof CertificationImport
     }
   }
 }
@@ -114,11 +114,11 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren([
-  LayoutRoute.addChildren([
-    LayoutAdminRoute,
-    LayoutItemsRoute,
-    LayoutSettingsRoute,
-    LayoutIndexRoute,
+  CertificationRoute.addChildren([
+    CertificationAdminRoute,
+    CertificationItemsRoute,
+    CertificationSettingsRoute,
+    CertificationIndexRoute,
   ]),
   LoginRoute,
   RecoverPasswordRoute,
