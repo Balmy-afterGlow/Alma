@@ -86,22 +86,21 @@ services:
       SMTP_TLS: "false"
       EMAILS_FROM_EMAIL: "noreply@example.com"
 
-  mailcatcher:
-    image: schickling/mailcatcher
-    ports:
-      - "1080:1080"
-      - "1025:1025"
-
-  # frontend:
-  #   restart: "no"
+  # mailcatcher:
+  #   image: schickling/mailcatcher
   #   ports:
-  #     - "5173:80"
-  #   build:
-  #     context: ./frontend
-  #     args:
-  #       - VITE_API_URL=http://localhost:8000
-  #       - NODE_ENV=development
+  #     - "1080:1080"
+  #     - "1025:1025"
 
+  frontend:
+    restart: "no"
+    ports:
+      - "5173:80"
+    build:
+      context: ./frontend
+      args:
+        - VITE_API_URL=http://localhost:8000
+        - NODE_ENV=development
   # playwright:
   #   build:
   #     context: ./frontend
