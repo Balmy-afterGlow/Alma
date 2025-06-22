@@ -1,8 +1,28 @@
 from fastapi import APIRouter
 
-from app.api.v1.endpoints import login, users, utils
+from app.api.v1.endpoints import (
+    agents,
+    chat,
+    conversations,
+    dashboard,
+    llm_configs,
+    login,
+    messages,
+    users,
+    utils,
+)
 
 api_router = APIRouter()
 api_router.include_router(login.router)
-api_router.include_router(users.router)
+api_router.include_router(users.router, prefix="/users", tags=["users"])
 api_router.include_router(utils.router)
+api_router.include_router(dashboard.router, prefix="/dashboard", tags=["dashboard"])
+api_router.include_router(
+    llm_configs.router, prefix="/llm-configs", tags=["llm-configs"]
+)
+api_router.include_router(agents.router, prefix="/agents", tags=["agents"])
+api_router.include_router(
+    conversations.router, prefix="/conversations", tags=["conversations"]
+)
+api_router.include_router(messages.router, prefix="/messages", tags=["messages"])
+api_router.include_router(chat.router, prefix="/chat", tags=["chat"])
