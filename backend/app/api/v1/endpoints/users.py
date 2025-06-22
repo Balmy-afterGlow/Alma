@@ -35,7 +35,7 @@ router = APIRouter(prefix="/users", tags=["users"])
 )
 def read_users(session: SessionDep, skip: int = 0, limit: int = 100) -> Any:
     """
-    Retrieve users.
+    Retrieve users.s
     """
 
     count_statement = select(func.count()).select_from(User)
@@ -86,7 +86,7 @@ def update_user_me(
 
     if user_in.email:
         existing_user = crud.get_user_by_email(session=session, email=user_in.email)
-        if existing_user and existing_user.id != current_user.id:
+        if existing_user and existing_user.user_id != current_user.user_id:
             raise HTTPException(
                 status_code=409, detail="User with this email already exists"
             )
@@ -197,7 +197,7 @@ def update_user(
         )
     if user_in.email:
         existing_user = crud.get_user_by_email(session=session, email=user_in.email)
-        if existing_user and existing_user.id != user_id:
+        if existing_user and existing_user.user_id != user_id:
             raise HTTPException(
                 status_code=409, detail="User with this email already exists"
             )

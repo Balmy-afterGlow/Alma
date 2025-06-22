@@ -1,5 +1,28 @@
-from .message import Message
+from .agent import AgentBase, AgentCreate, AgentPublic, AgentsPublic, AgentUpdate
+from .conversation import (
+    ConversationBase,
+    ConversationCreate,
+    ConversationPublic,
+    ConversationsPublic,
+    ConversationUpdate,
+)
+from .llmconfig import (
+    LLMConfigBase,
+    LLMConfigCreate,
+    LLMConfigPublic,
+    LLMConfigsPublic,
+    LLMConfigUpdate,
+)
+from .message import (
+    MessageBase,
+    MessageCreate,
+    MessagePublic,
+    MessagesPublic,
+    MessageUpdate,
+)
+from .model import ModelBase, ModelCreate, ModelPublic, ModelsPublic, ModelUpdate
 from .token import NewPassword, Token, TokenPayload
+from .tool import ToolBase, ToolCreate, ToolPublic, ToolsPublic, ToolUpdate
 from .user import (
     UpdatePassword,
     UserBase,
@@ -12,6 +35,7 @@ from .user import (
 )
 
 __all__ = [
+    # User schemas
     "UserBase",
     "UserCreate",
     "UserRegister",
@@ -20,7 +44,43 @@ __all__ = [
     "UpdatePassword",
     "UserPublic",
     "UsersPublic",
-    "Message",
+    # Agent schemas
+    "AgentBase",
+    "AgentCreate",
+    "AgentUpdate",
+    "AgentPublic",
+    "AgentsPublic",
+    # Conversation schemas
+    "ConversationBase",
+    "ConversationCreate",
+    "ConversationUpdate",
+    "ConversationPublic",
+    "ConversationsPublic",
+    # Message schemas
+    "MessageBase",
+    "MessageCreate",
+    "MessageUpdate",
+    "MessagePublic",
+    "MessagesPublic",
+    # Model schemas
+    "ModelBase",
+    "ModelCreate",
+    "ModelUpdate",
+    "ModelPublic",
+    "ModelsPublic",
+    # LLMConfig schemas
+    "LLMConfigBase",
+    "LLMConfigCreate",
+    "LLMConfigUpdate",
+    "LLMConfigPublic",
+    "LLMConfigsPublic",
+    # Tool schemas
+    "ToolBase",
+    "ToolCreate",
+    "ToolUpdate",
+    "ToolPublic",
+    "ToolsPublic",
+    # Others
     "Token",
     "TokenPayload",
     "NewPassword",
