@@ -1,13 +1,13 @@
 import uuid
 from datetime import datetime, timezone
-from typing import Any, Literal
+from typing import Any
 
 from sqlmodel import JSON, Field, SQLModel, Text
 
 
 class Message(SQLModel, table=True):
     message_id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    role: Literal["user", "assistant", "tool", "system"]
+    role: str  # Literal["user", "assistant", "system", "tool"]
     content: str = Field(sa_type=Text)
     model_metadata: dict[str, Any] | None = Field(default=None, sa_type=JSON)
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))

@@ -1,10 +1,3 @@
-from .item import (
-    ItemBase,
-    ItemCreate,
-    ItemPublic,
-    ItemsPublic,
-    ItemUpdate,
-)
 from .message import Message
 from .token import NewPassword, Token, TokenPayload
 from .user import (
@@ -27,11 +20,6 @@ __all__ = [
     "UpdatePassword",
     "UserPublic",
     "UsersPublic",
-    "ItemBase",
-    "ItemCreate",
-    "ItemUpdate",
-    "ItemPublic",
-    "ItemsPublic",
     "Message",
     "Token",
     "TokenPayload",

@@ -24,7 +24,7 @@ COPY ./app /code/app
 
 # Install the project with BuildKit cache
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --no-deps .
+    pip install .
 
 ENV PYTHONPATH=/code
 
