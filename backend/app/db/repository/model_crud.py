@@ -67,3 +67,20 @@ def get_models_count_by_llm_config(*, session: Session, llm_id: uuid.UUID) -> in
     """获取LLM配置下的模型总数"""
     statement = select(Model).where(Model.llm_id == llm_id)
     return len(list(session.exec(statement).all()))
+
+
+def get_models_by_user(
+    *, session: Session, user_id: uuid.UUID, skip: int = 0, limit: int = 100
+) -> list[Model]:
+    """获取用户的所有模型"""
+    # 通过 LLM 配置关联查询用户的模型
+    from app.models import LLMConfig
+
+    statement = (
+        select(Model)
+        .join(LLMConfig, Model.llm_id == LLMConfig.llm_id)
+        .where(LLMConfig.user_id == user_id)
+        .offset(skip)
+        .limit(limit)
+    )
+    return list(session.exec(statement).all())

@@ -62,6 +62,7 @@ from .model_crud import (
     get_model_by_id,
     get_model_by_name,
     get_models_by_llm_config,
+    get_models_by_user,
     get_models_count_by_llm_config,
     update_model,
 )
@@ -118,6 +119,7 @@ __all__ = [
     "get_all_models",
     "update_model",
     "delete_model",
+    "get_models_by_user",
     "get_models_count_by_llm_config",
     # LLMConfig CRUD
     "create_llm_config",

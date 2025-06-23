@@ -65,6 +65,16 @@ import type {
   MessagesUpdateUserMessageResponse,
   MessagesDeleteUserMessageData,
   MessagesDeleteUserMessageResponse,
+  ModelsGetUserModelsData,
+  ModelsGetUserModelsResponse,
+  ModelsCreateUserModelData,
+  ModelsCreateUserModelResponse,
+  ModelsGetModelData,
+  ModelsGetModelResponse,
+  ModelsUpdateUserModelData,
+  ModelsUpdateUserModelResponse,
+  ModelsDeleteUserModelData,
+  ModelsDeleteUserModelResponse,
   UsersReadUsersData,
   UsersReadUsersResponse,
   UsersCreateUserData,
@@ -962,6 +972,155 @@ export class MessagesService {
       url: "/api/v1/messages/{message_id}",
       path: {
         message_id: data.messageId,
+      },
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
+
+export class ModelsService {
+  /**
+   * Get User Models
+   * 获取当前用户的所有模型
+   * @param data The data for the request.
+   * @param data.args
+   * @param data.kwargs
+   * @param data.skip
+   * @param data.limit
+   * @returns ModelsPublic Successful Response
+   * @throws ApiError
+   */
+  public static getUserModels(
+    data: ModelsGetUserModelsData,
+  ): CancelablePromise<ModelsGetUserModelsResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/models/",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create User Model
+   * 创建新的模型配置
+   * @param data The data for the request.
+   * @param data.args
+   * @param data.kwargs
+   * @param data.requestBody
+   * @returns ModelPublic Successful Response
+   * @throws ApiError
+   */
+  public static createUserModel(
+    data: ModelsCreateUserModelData,
+  ): CancelablePromise<ModelsCreateUserModelResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/models/",
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Get Model
+   * 获取指定模型的详细信息
+   * @param data The data for the request.
+   * @param data.modelId
+   * @param data.args
+   * @param data.kwargs
+   * @returns ModelPublic Successful Response
+   * @throws ApiError
+   */
+  public static getModel(
+    data: ModelsGetModelData,
+  ): CancelablePromise<ModelsGetModelResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/models/{model_id}",
+      path: {
+        model_id: data.modelId,
+      },
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update User Model
+   * 更新模型配置
+   * @param data The data for the request.
+   * @param data.modelId
+   * @param data.args
+   * @param data.kwargs
+   * @param data.requestBody
+   * @returns ModelPublic Successful Response
+   * @throws ApiError
+   */
+  public static updateUserModel(
+    data: ModelsUpdateUserModelData,
+  ): CancelablePromise<ModelsUpdateUserModelResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/models/{model_id}",
+      path: {
+        model_id: data.modelId,
+      },
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete User Model
+   * 删除模型配置
+   * @param data The data for the request.
+   * @param data.modelId
+   * @param data.args
+   * @param data.kwargs
+   * @returns string Successful Response
+   * @throws ApiError
+   */
+  public static deleteUserModel(
+    data: ModelsDeleteUserModelData,
+  ): CancelablePromise<ModelsDeleteUserModelResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/models/{model_id}",
+      path: {
+        model_id: data.modelId,
       },
       query: {
         args: data.args,

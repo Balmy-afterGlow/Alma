@@ -8,6 +8,7 @@ from app.api.v1.endpoints import (
     llm_configs,
     login,
     messages,
+    models,
     users,
     utils,
     websocket_chat,
@@ -21,6 +22,7 @@ api_router.include_router(dashboard.router, prefix="/dashboard", tags=["dashboar
 api_router.include_router(
     llm_configs.router, prefix="/llm-configs", tags=["llm-configs"]
 )
+api_router.include_router(models.router, prefix="/models", tags=["models"])
 api_router.include_router(agents.router, prefix="/agents", tags=["agents"])
 api_router.include_router(
     conversations.router, prefix="/conversations", tags=["conversations"]

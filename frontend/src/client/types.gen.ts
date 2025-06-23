@@ -550,6 +550,50 @@ export type MessagesDeleteUserMessageResponse = {
   [key: string]: string
 }
 
+export type ModelsGetUserModelsData = {
+  args: unknown
+  kwargs: unknown
+  limit?: number
+  skip?: number
+}
+
+export type ModelsGetUserModelsResponse = ModelsPublic
+
+export type ModelsCreateUserModelData = {
+  args: unknown
+  kwargs: unknown
+  requestBody: ModelCreate
+}
+
+export type ModelsCreateUserModelResponse = ModelPublic
+
+export type ModelsGetModelData = {
+  args: unknown
+  kwargs: unknown
+  modelId: string
+}
+
+export type ModelsGetModelResponse = ModelPublic
+
+export type ModelsUpdateUserModelData = {
+  args: unknown
+  kwargs: unknown
+  modelId: string
+  requestBody: ModelUpdate
+}
+
+export type ModelsUpdateUserModelResponse = ModelPublic
+
+export type ModelsDeleteUserModelData = {
+  args: unknown
+  kwargs: unknown
+  modelId: string
+}
+
+export type ModelsDeleteUserModelResponse = {
+  [key: string]: string
+}
+
 export type UsersReadUsersData = {
   limit?: number
   skip?: number
