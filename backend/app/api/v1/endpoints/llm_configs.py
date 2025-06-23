@@ -9,7 +9,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session
 
-from app.api.v1.dependencies import get_current_user, get_session
+from app.api.v1.dependencies import get_current_user, SessionDep
 from app.db.repository import (
     create_llm_config,
     create_model,
@@ -38,7 +38,7 @@ router = APIRouter()
 
 @router.get("/", response_model=LLMConfigsPublic)
 def get_user_llm_configs(
-    session: Annotated[Session, Depends(get_session)],
+    session: Annotated[Session, Depends(SessionDep)],
     current_user: Annotated[User, Depends(get_current_user)],
     skip: int = 0,
     limit: int = 100,
@@ -53,7 +53,7 @@ def get_user_llm_configs(
 @router.post("/", response_model=LLMConfigPublic)
 def create_user_llm_config(
     *,
-    session: Annotated[Session, Depends(get_session)],
+    session: Annotated[Session, Depends(SessionDep)],
     current_user: Annotated[User, Depends(get_current_user)],
     llm_config_in: LLMConfigCreate,
 ) -> LLMConfigPublic:
@@ -67,7 +67,7 @@ def create_user_llm_config(
 @router.get("/{llm_id}", response_model=LLMConfigPublic)
 def get_llm_config(
     llm_id: uuid.UUID,
-    session: Annotated[Session, Depends(get_session)],
+    session: Annotated[Session, Depends(SessionDep)],
     current_user: Annotated[User, Depends(get_current_user)],
 ) -> LLMConfigPublic:
     """获取指定的LLM配置"""
@@ -89,7 +89,7 @@ def get_llm_config(
 @router.put("/{llm_id}", response_model=LLMConfigPublic)
 def update_user_llm_config(
     *,
-    session: Annotated[Session, Depends(get_session)],
+    session: Annotated[Session, Depends(SessionDep)],
     current_user: Annotated[User, Depends(get_current_user)],
     llm_id: uuid.UUID,
     llm_config_in: LLMConfigUpdate,
@@ -116,7 +116,7 @@ def update_user_llm_config(
 @router.delete("/{llm_id}")
 def delete_user_llm_config(
     llm_id: uuid.UUID,
-    session: Annotated[Session, Depends(get_session)],
+    session: Annotated[Session, Depends(SessionDep)],
     current_user: Annotated[User, Depends(get_current_user)],
 ) -> dict[str, str]:
     """删除LLM配置"""
@@ -145,7 +145,7 @@ def delete_user_llm_config(
 @router.get("/{llm_id}/models", response_model=ModelsPublic)
 def get_llm_models(
     llm_id: uuid.UUID,
-    session: Annotated[Session, Depends(get_session)],
+    session: Annotated[Session, Depends(SessionDep)],
     current_user: Annotated[User, Depends(get_current_user)],
     skip: int = 0,
     limit: int = 100,
@@ -172,7 +172,7 @@ def get_llm_models(
 @router.post("/{llm_id}/models", response_model=ModelPublic)
 def create_llm_model(
     *,
-    session: Annotated[Session, Depends(get_session)],
+    session: Annotated[Session, Depends(SessionDep)],
     current_user: Annotated[User, Depends(get_current_user)],
     llm_id: uuid.UUID,
     model_in: ModelCreate,
@@ -199,7 +199,7 @@ def create_llm_model(
 @router.put("/{llm_id}/models/{model_id}", response_model=ModelPublic)
 def update_llm_model(
     *,
-    session: Annotated[Session, Depends(get_session)],
+    session: Annotated[Session, Depends(SessionDep)],
     current_user: Annotated[User, Depends(get_current_user)],
     llm_id: uuid.UUID,
     model_id: uuid.UUID,
@@ -227,7 +227,7 @@ def update_llm_model(
 def delete_llm_model(
     llm_id: uuid.UUID,
     model_id: uuid.UUID,
-    session: Annotated[Session, Depends(get_session)],
+    session: Annotated[Session, Depends(SessionDep)],
     current_user: Annotated[User, Depends(get_current_user)],
 ) -> dict[str, str]:
     """删除模型"""

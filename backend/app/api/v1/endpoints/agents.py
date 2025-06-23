@@ -9,7 +9,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session
 
-from app.api.v1.dependencies import get_current_user, get_session
+from app.api.v1.dependencies import get_current_user, SessionDep
 from app.db.repository import (
     get_agent_by_id,
     get_system_agents,
@@ -23,7 +23,7 @@ router = APIRouter()
 
 @router.get("/system", response_model=AgentsPublic)
 def get_available_system_agents(
-    session: Annotated[Session, Depends(get_session)],
+    session: Annotated[Session, Depends(SessionDep)],
     current_user: Annotated[User, Depends(get_current_user)],
     skip: int = 0,
     limit: int = 100,
@@ -36,7 +36,7 @@ def get_available_system_agents(
 @router.get("/{agent_id}", response_model=AgentPublic)
 def get_agent_details(
     agent_id: uuid.UUID,
-    session: Annotated[Session, Depends(get_session)],
+    session: Annotated[Session, Depends(SessionDep)],
     current_user: Annotated[User, Depends(get_current_user)],
 ) -> AgentPublic:
     """获取Agent详细信息"""
@@ -56,7 +56,7 @@ def get_agent_details(
 @router.get("/{agent_id}/tools", response_model=ToolsPublic)
 def get_agent_tools(
     agent_id: uuid.UUID,
-    session: Annotated[Session, Depends(get_session)],
+    session: Annotated[Session, Depends(SessionDep)],
     current_user: Annotated[User, Depends(get_current_user)],
 ) -> ToolsPublic:
     """获取Agent的工具列表"""

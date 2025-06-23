@@ -9,7 +9,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session
 
-from app.api.v1.dependencies import get_current_user, get_session
+from app.api.v1.dependencies import get_current_user, SessionDep
 from app.db.repository import (
     create_message,
     get_conversation_by_id,
@@ -27,7 +27,7 @@ router = APIRouter()
 @router.get("/conversation/{conversation_id}", response_model=MessagesPublic)
 def get_conversation_messages(
     conversation_id: uuid.UUID,
-    session: Annotated[Session, Depends(get_session)],
+    session: Annotated[Session, Depends(SessionDep)],
     current_user: Annotated[User, Depends(get_current_user)],
     skip: int = 0,
     limit: int = 100,
@@ -54,7 +54,7 @@ def get_conversation_messages(
 @router.post("/", response_model=MessagePublic)
 def create_new_message(
     *,
-    session: Annotated[Session, Depends(get_session)],
+    session: Annotated[Session, Depends(SessionDep)],
     current_user: Annotated[User, Depends(get_current_user)],
     message_in: MessageCreate,
 ) -> MessagePublic:
@@ -79,7 +79,7 @@ def create_new_message(
 @router.get("/{message_id}", response_model=MessagePublic)
 def get_message(
     message_id: uuid.UUID,
-    session: Annotated[Session, Depends(get_session)],
+    session: Annotated[Session, Depends(SessionDep)],
     current_user: Annotated[User, Depends(get_current_user)],
 ) -> MessagePublic:
     """获取指定消息"""
@@ -102,7 +102,7 @@ def get_message(
 @router.put("/{message_id}", response_model=MessagePublic)
 def update_user_message(
     *,
-    session: Annotated[Session, Depends(get_session)],
+    session: Annotated[Session, Depends(SessionDep)],
     current_user: Annotated[User, Depends(get_current_user)],
     message_id: uuid.UUID,
     message_in: MessageUpdate,
@@ -134,7 +134,7 @@ def update_user_message(
 @router.delete("/{message_id}")
 def delete_user_message(
     message_id: uuid.UUID,
-    session: Annotated[Session, Depends(get_session)],
+    session: Annotated[Session, Depends(SessionDep)],
     current_user: Annotated[User, Depends(get_current_user)],
 ) -> dict[str, str]:
     """删除消息（软删除）"""

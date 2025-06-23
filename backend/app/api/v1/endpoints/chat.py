@@ -10,17 +10,18 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from sqlmodel import Session
 
-from app.api.v1.dependencies import get_current_user, get_session
+from app.api.v1.dependencies import get_current_user, SessionDep
 from app.db.repository import (
     create_conversation,
     create_message,
     get_agent_by_id,
     get_conversation_by_id,
-    get_decrypted_api_key,
     get_model_by_id,
+    get_messages_by_conversation,
 )
 from app.models import User
 from app.schemas import ConversationCreate, MessageCreate
+from app.services.agent_service import agent_dialogue_service
 
 router = APIRouter()
 
@@ -41,12 +42,16 @@ class ChatResponse(BaseModel):
     user_message_id: uuid.UUID
     assistant_message_id: uuid.UUID
     response: str
+    events: list[dict] | None = None
+    events_summary: dict | None = None
+    session_id: str | None = None
+    autoagent_info: dict | None = None
 
 
 @router.post("/", response_model=ChatResponse)
 async def chat_with_agent(
     *,
-    session: Annotated[Session, Depends(get_session)],
+    session: Annotated[Session, Depends(SessionDep)],
     current_user: Annotated[User, Depends(get_current_user)],
     chat_request: ChatRequest,
 ) -> ChatResponse:
@@ -98,7 +103,7 @@ async def chat_with_agent(
         ),
     )
 
-    # 4. 获取模型和API密钥信息（如果指定了模型）
+    # 4. 获取模型信息（如果指定了模型）
     model = None
     if chat_request.model_id:
         model = get_model_by_id(session=session, model_id=chat_request.model_id)
@@ -107,25 +112,33 @@ async def chat_with_agent(
                 status_code=status.HTTP_404_NOT_FOUND, detail="模型不存在"
             )
 
-        # 检查模型是否属于当前用户的LLM配置
-        api_key = get_decrypted_api_key(session=session, llm_id=model.llm_id)
-        if not api_key:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN, detail="无法访问模型的API密钥"
-            )
-
-    # 5. 调用LLM生成响应（这里需要实现具体的LLM调用逻辑）
-    # TODO: 实现实际的LLM调用逻辑
-    assistant_response = await _generate_agent_response(
-        agent=agent, user_message=chat_request.message, model=model
+    # 5. 获取对话历史
+    conversation_history = get_messages_by_conversation(
+        session=session, conversation_id=conversation.conversation_id
     )
 
-    # 6. 创建助手消息
+    # 6. 调用智能体对话服务，使用AutoAgent
+    session_id = str(conversation.conversation_id)
+    dialogue_result = await agent_dialogue_service.process_agent_dialogue(
+        session=session,
+        agent=agent,
+        user_message=chat_request.message,
+        conversation_history=conversation_history[:-1],  # 排除刚创建的用户消息
+        session_id=session_id,
+    )
+
+    if not dialogue_result["success"]:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"对话处理失败: {dialogue_result.get('error', '未知错误')}",
+        )
+
+    # 7. 创建助手消息
     assistant_message = create_message(
         session=session,
         message_create=MessageCreate(
             role="assistant",
-            content=assistant_response,
+            content=dialogue_result["response"],
             conversation_id=conversation.conversation_id,
             agent_id=chat_request.agent_id,
             model_metadata={
@@ -133,6 +146,14 @@ async def chat_with_agent(
                 if chat_request.model_id
                 else None,
                 "model_name": model.name if model else None,
+                "events": dialogue_result.get("events", []),
+                "events_summary": dialogue_result.get("events_summary", {}),
+                "session_id": dialogue_result.get("session_id"),
+                "autoagent_info": {
+                    "agent_name": dialogue_result.get("agent_name"),
+                    "raw_result": dialogue_result.get("raw_result"),
+                    "autoagent_messages": dialogue_result.get("autoagent_messages", []),
+                },
             },
         ),
     )
@@ -141,26 +162,12 @@ async def chat_with_agent(
         conversation_id=conversation.conversation_id,
         user_message_id=user_message.message_id,
         assistant_message_id=assistant_message.message_id,
-        response=assistant_response,
+        response=dialogue_result["response"],
+        events=dialogue_result.get("events"),
+        events_summary=dialogue_result.get("events_summary"),
+        session_id=dialogue_result.get("session_id"),
+        autoagent_info={
+            "agent_name": dialogue_result.get("agent_name"),
+            "context_variables": dialogue_result.get("context_variables", {}),
+        },
     )
-
-
-async def _generate_agent_response(agent, user_message: str, model=None) -> str:
-    """生成Agent响应的内部函数"""
-    # TODO: 这里需要实现实际的LLM调用逻辑
-    # 目前返回一个简单的模拟响应
-
-    response = f"我是{agent.name}。收到你的消息：'{user_message}'。"
-
-    if model:
-        response += f" 我正在使用{model.name}模型为你服务。"
-
-    # 这里应该根据agent.instruction和用户消息来构建prompt
-    # 然后调用相应的LLM API
-    # 示例实现：
-    # - 构建完整的prompt（包含agent instruction、工具信息等）
-    # - 调用LLM API
-    # - 处理工具调用（如果有）
-    # - 返回最终响应
-
-    return response

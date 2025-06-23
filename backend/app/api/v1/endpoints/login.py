@@ -14,7 +14,7 @@ from app.core import security
 from app.core.config import settings
 from app.core.security import get_password_hash
 from app.db import repository as crud
-from app.schemas import Message, NewPassword, Token, UserPublic
+from app.schemas import NewPassword, Token, UserPublic
 from app.services import authenticate
 from app.utils.email import (
     generate_password_reset_token,
@@ -22,6 +22,13 @@ from app.utils.email import (
     send_email,
     verify_password_reset_token,
 )
+
+from pydantic import BaseModel
+
+
+class Message(BaseModel):
+    message: str
+
 
 router = APIRouter(tags=["login"])
 

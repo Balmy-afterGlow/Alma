@@ -1,4 +1,11 @@
 from .agent import AgentBase, AgentCreate, AgentPublic, AgentsPublic, AgentUpdate
+from .chat import (
+    AgentEventPublic,
+    ChatMessagePublic,
+    ChatMessageWithEvents,
+    ConversationWithEventsMessages,
+    ConversationWithMessages,
+)
 from .conversation import (
     ConversationBase,
     ConversationCreate,
@@ -56,6 +63,12 @@ __all__ = [
     "ConversationUpdate",
     "ConversationPublic",
     "ConversationsPublic",
+    # Chat schemas
+    "AgentEventPublic",
+    "ChatMessagePublic",
+    "ChatMessageWithEvents",
+    "ConversationWithEventsMessages",
+    "ConversationWithMessages",
     # Message schemas
     "MessageBase",
     "MessageCreate",

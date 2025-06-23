@@ -8,7 +8,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from sqlmodel import Session
 
-from app.api.v1.dependencies import get_current_user, get_session
+from app.api.v1.dependencies import get_current_user, SessionDep
 from app.db.repository import (
     get_conversations_count_by_user,
     get_llm_configs_count_by_user,
@@ -23,7 +23,7 @@ router = APIRouter()
 
 @router.get("/", response_model=UserDashboard)
 def get_user_dashboard(
-    session: Annotated[Session, Depends(get_session)],
+    session: Annotated[Session, Depends(SessionDep)],
     current_user: Annotated[User, Depends(get_current_user)],
 ) -> UserDashboard:
     """获取用户仪表板数据"""

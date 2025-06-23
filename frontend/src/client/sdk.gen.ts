@@ -4,16 +4,48 @@ import type { CancelablePromise } from "./core/CancelablePromise"
 import { OpenAPI } from "./core/OpenAPI"
 import { request as __request } from "./core/request"
 import type {
-  ItemsReadItemsData,
-  ItemsReadItemsResponse,
-  ItemsCreateItemData,
-  ItemsCreateItemResponse,
-  ItemsReadItemData,
-  ItemsReadItemResponse,
-  ItemsUpdateItemData,
-  ItemsUpdateItemResponse,
-  ItemsDeleteItemData,
-  ItemsDeleteItemResponse,
+  AgentsGetAvailableSystemAgentsData,
+  AgentsGetAvailableSystemAgentsResponse,
+  AgentsGetAgentDetailsData,
+  AgentsGetAgentDetailsResponse,
+  AgentsGetAgentToolsData,
+  AgentsGetAgentToolsResponse,
+  ChatChatWithAgentData,
+  ChatChatWithAgentResponse,
+  ConversationsGetUserConversationsData,
+  ConversationsGetUserConversationsResponse,
+  ConversationsCreateNewConversationData,
+  ConversationsCreateNewConversationResponse,
+  ConversationsGetRecentConversationsData,
+  ConversationsGetRecentConversationsResponse,
+  ConversationsGetConversationData,
+  ConversationsGetConversationResponse,
+  ConversationsUpdateConversationTitleData,
+  ConversationsUpdateConversationTitleResponse,
+  ConversationsDeleteUserConversationData,
+  ConversationsDeleteUserConversationResponse,
+  ConversationsGetConversationDetailedData,
+  ConversationsGetConversationDetailedResponse,
+  DashboardGetUserDashboardData,
+  DashboardGetUserDashboardResponse,
+  LlmConfigsGetUserLlmConfigsData,
+  LlmConfigsGetUserLlmConfigsResponse,
+  LlmConfigsCreateUserLlmConfigData,
+  LlmConfigsCreateUserLlmConfigResponse,
+  LlmConfigsGetLlmConfigData,
+  LlmConfigsGetLlmConfigResponse,
+  LlmConfigsUpdateUserLlmConfigData,
+  LlmConfigsUpdateUserLlmConfigResponse,
+  LlmConfigsDeleteUserLlmConfigData,
+  LlmConfigsDeleteUserLlmConfigResponse,
+  LlmConfigsGetLlmModelsData,
+  LlmConfigsGetLlmModelsResponse,
+  LlmConfigsCreateLlmModelData,
+  LlmConfigsCreateLlmModelResponse,
+  LlmConfigsUpdateLlmModelData,
+  LlmConfigsUpdateLlmModelResponse,
+  LlmConfigsDeleteLlmModelData,
+  LlmConfigsDeleteLlmModelResponse,
   LoginLoginAccessTokenData,
   LoginLoginAccessTokenResponse,
   LoginTestTokenResponse,
@@ -23,6 +55,16 @@ import type {
   LoginResetPasswordResponse,
   LoginRecoverPasswordHtmlContentData,
   LoginRecoverPasswordHtmlContentResponse,
+  MessagesGetConversationMessagesData,
+  MessagesGetConversationMessagesResponse,
+  MessagesCreateNewMessageData,
+  MessagesCreateNewMessageResponse,
+  MessagesGetMessageData,
+  MessagesGetMessageResponse,
+  MessagesUpdateUserMessageData,
+  MessagesUpdateUserMessageResponse,
+  MessagesDeleteUserMessageData,
+  MessagesDeleteUserMessageResponse,
   UsersReadUsersData,
   UsersReadUsersResponse,
   UsersCreateUserData,
@@ -44,25 +86,29 @@ import type {
   UtilsHealthCheckResponse,
 } from "./types.gen"
 
-export class ItemsService {
+export class AgentsService {
   /**
-   * Read Items
-   * Retrieve items.
+   * Get Available System Agents
+   * 获取可用的系统Agent列表
    * @param data The data for the request.
+   * @param data.args
+   * @param data.kwargs
    * @param data.skip
    * @param data.limit
-   * @returns ItemsPublic Successful Response
+   * @returns AgentsPublic Successful Response
    * @throws ApiError
    */
-  public static readItems(
-    data: ItemsReadItemsData = {},
-  ): CancelablePromise<ItemsReadItemsResponse> {
+  public static getAvailableSystemAgents(
+    data: AgentsGetAvailableSystemAgentsData,
+  ): CancelablePromise<AgentsGetAvailableSystemAgentsResponse> {
     return __request(OpenAPI, {
       method: "GET",
-      url: "/api/v1/items/",
+      url: "/api/v1/agents/system",
       query: {
         skip: data.skip,
         limit: data.limit,
+        args: data.args,
+        kwargs: data.kwargs,
       },
       errors: {
         422: "Validation Error",
@@ -71,43 +117,27 @@ export class ItemsService {
   }
 
   /**
-   * Create Item
-   * Create new item.
+   * Get Agent Details
+   * 获取Agent详细信息
    * @param data The data for the request.
-   * @param data.requestBody
-   * @returns ItemPublic Successful Response
+   * @param data.agentId
+   * @param data.args
+   * @param data.kwargs
+   * @returns AgentPublic Successful Response
    * @throws ApiError
    */
-  public static createItem(
-    data: ItemsCreateItemData,
-  ): CancelablePromise<ItemsCreateItemResponse> {
-    return __request(OpenAPI, {
-      method: "POST",
-      url: "/api/v1/items/",
-      body: data.requestBody,
-      mediaType: "application/json",
-      errors: {
-        422: "Validation Error",
-      },
-    })
-  }
-
-  /**
-   * Read Item
-   * Get item by ID.
-   * @param data The data for the request.
-   * @param data.id
-   * @returns ItemPublic Successful Response
-   * @throws ApiError
-   */
-  public static readItem(
-    data: ItemsReadItemData,
-  ): CancelablePromise<ItemsReadItemResponse> {
+  public static getAgentDetails(
+    data: AgentsGetAgentDetailsData,
+  ): CancelablePromise<AgentsGetAgentDetailsResponse> {
     return __request(OpenAPI, {
       method: "GET",
-      url: "/api/v1/items/{id}",
+      url: "/api/v1/agents/{agent_id}",
       path: {
-        id: data.id,
+        agent_id: data.agentId,
+      },
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
       },
       errors: {
         422: "Validation Error",
@@ -116,22 +146,114 @@ export class ItemsService {
   }
 
   /**
-   * Update Item
-   * Update an item.
+   * Get Agent Tools
+   * 获取Agent的工具列表
    * @param data The data for the request.
-   * @param data.id
-   * @param data.requestBody
-   * @returns ItemPublic Successful Response
+   * @param data.agentId
+   * @param data.args
+   * @param data.kwargs
+   * @returns ToolsPublic Successful Response
    * @throws ApiError
    */
-  public static updateItem(
-    data: ItemsUpdateItemData,
-  ): CancelablePromise<ItemsUpdateItemResponse> {
+  public static getAgentTools(
+    data: AgentsGetAgentToolsData,
+  ): CancelablePromise<AgentsGetAgentToolsResponse> {
     return __request(OpenAPI, {
-      method: "PUT",
-      url: "/api/v1/items/{id}",
+      method: "GET",
+      url: "/api/v1/agents/{agent_id}/tools",
       path: {
-        id: data.id,
+        agent_id: data.agentId,
+      },
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
+
+export class ChatService {
+  /**
+   * Chat With Agent
+   * 与Agent进行对话
+   * @param data The data for the request.
+   * @param data.args
+   * @param data.kwargs
+   * @param data.requestBody
+   * @returns ChatResponse Successful Response
+   * @throws ApiError
+   */
+  public static chatWithAgent(
+    data: ChatChatWithAgentData,
+  ): CancelablePromise<ChatChatWithAgentResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/chat/",
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
+
+export class ConversationsService {
+  /**
+   * Get User Conversations
+   * 获取当前用户的所有对话
+   * @param data The data for the request.
+   * @param data.args
+   * @param data.kwargs
+   * @param data.skip
+   * @param data.limit
+   * @returns ConversationsPublic Successful Response
+   * @throws ApiError
+   */
+  public static getUserConversations(
+    data: ConversationsGetUserConversationsData,
+  ): CancelablePromise<ConversationsGetUserConversationsResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/conversations/",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create New Conversation
+   * 创建新的对话
+   * @param data The data for the request.
+   * @param data.args
+   * @param data.kwargs
+   * @param data.requestBody
+   * @returns ConversationPublic Successful Response
+   * @throws ApiError
+   */
+  public static createNewConversation(
+    data: ConversationsCreateNewConversationData,
+  ): CancelablePromise<ConversationsCreateNewConversationResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/conversations/",
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
       },
       body: data.requestBody,
       mediaType: "application/json",
@@ -142,21 +264,450 @@ export class ItemsService {
   }
 
   /**
-   * Delete Item
-   * Delete an item.
+   * Get Recent Conversations
+   * 获取当前用户的最近对话（用于侧边栏）
    * @param data The data for the request.
-   * @param data.id
-   * @returns Message Successful Response
+   * @param data.args
+   * @param data.kwargs
+   * @param data.limit
+   * @returns ConversationsPublic Successful Response
    * @throws ApiError
    */
-  public static deleteItem(
-    data: ItemsDeleteItemData,
-  ): CancelablePromise<ItemsDeleteItemResponse> {
+  public static getRecentConversations(
+    data: ConversationsGetRecentConversationsData,
+  ): CancelablePromise<ConversationsGetRecentConversationsResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/conversations/recent",
+      query: {
+        limit: data.limit,
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Get Conversation
+   * 获取指定对话的详细信息
+   * @param data The data for the request.
+   * @param data.conversationId
+   * @param data.args
+   * @param data.kwargs
+   * @returns ConversationPublic Successful Response
+   * @throws ApiError
+   */
+  public static getConversation(
+    data: ConversationsGetConversationData,
+  ): CancelablePromise<ConversationsGetConversationResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/conversations/{conversation_id}",
+      path: {
+        conversation_id: data.conversationId,
+      },
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Conversation Title
+   * 更新对话标题
+   * @param data The data for the request.
+   * @param data.conversationId
+   * @param data.args
+   * @param data.kwargs
+   * @param data.requestBody
+   * @returns ConversationPublic Successful Response
+   * @throws ApiError
+   */
+  public static updateConversationTitle(
+    data: ConversationsUpdateConversationTitleData,
+  ): CancelablePromise<ConversationsUpdateConversationTitleResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/conversations/{conversation_id}",
+      path: {
+        conversation_id: data.conversationId,
+      },
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete User Conversation
+   * 删除对话
+   * @param data The data for the request.
+   * @param data.conversationId
+   * @param data.args
+   * @param data.kwargs
+   * @returns string Successful Response
+   * @throws ApiError
+   */
+  public static deleteUserConversation(
+    data: ConversationsDeleteUserConversationData,
+  ): CancelablePromise<ConversationsDeleteUserConversationResponse> {
     return __request(OpenAPI, {
       method: "DELETE",
-      url: "/api/v1/items/{id}",
+      url: "/api/v1/conversations/{conversation_id}",
       path: {
-        id: data.id,
+        conversation_id: data.conversationId,
+      },
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Get Conversation Detailed
+   * 获取包含详细事件信息的对话内容
+   * @param data The data for the request.
+   * @param data.conversationId
+   * @param data.args
+   * @param data.kwargs
+   * @returns ConversationWithEventsMessages Successful Response
+   * @throws ApiError
+   */
+  public static getConversationDetailed(
+    data: ConversationsGetConversationDetailedData,
+  ): CancelablePromise<ConversationsGetConversationDetailedResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/conversations/{conversation_id}/detailed",
+      path: {
+        conversation_id: data.conversationId,
+      },
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
+
+export class DashboardService {
+  /**
+   * Get User Dashboard
+   * 获取用户仪表板数据
+   * @param data The data for the request.
+   * @param data.args
+   * @param data.kwargs
+   * @returns UserDashboard Successful Response
+   * @throws ApiError
+   */
+  public static getUserDashboard(
+    data: DashboardGetUserDashboardData,
+  ): CancelablePromise<DashboardGetUserDashboardResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/dashboard/",
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
+
+export class LlmConfigsService {
+  /**
+   * Get User Llm Configs
+   * 获取当前用户的所有LLM配置
+   * @param data The data for the request.
+   * @param data.args
+   * @param data.kwargs
+   * @param data.skip
+   * @param data.limit
+   * @returns LLMConfigsPublic Successful Response
+   * @throws ApiError
+   */
+  public static getUserLlmConfigs(
+    data: LlmConfigsGetUserLlmConfigsData,
+  ): CancelablePromise<LlmConfigsGetUserLlmConfigsResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/llm-configs/",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create User Llm Config
+   * 创建新的LLM配置
+   * @param data The data for the request.
+   * @param data.args
+   * @param data.kwargs
+   * @param data.requestBody
+   * @returns LLMConfigPublic Successful Response
+   * @throws ApiError
+   */
+  public static createUserLlmConfig(
+    data: LlmConfigsCreateUserLlmConfigData,
+  ): CancelablePromise<LlmConfigsCreateUserLlmConfigResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/llm-configs/",
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Get Llm Config
+   * 获取指定的LLM配置
+   * @param data The data for the request.
+   * @param data.llmId
+   * @param data.args
+   * @param data.kwargs
+   * @returns LLMConfigPublic Successful Response
+   * @throws ApiError
+   */
+  public static getLlmConfig(
+    data: LlmConfigsGetLlmConfigData,
+  ): CancelablePromise<LlmConfigsGetLlmConfigResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/llm-configs/{llm_id}",
+      path: {
+        llm_id: data.llmId,
+      },
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update User Llm Config
+   * 更新LLM配置
+   * @param data The data for the request.
+   * @param data.llmId
+   * @param data.args
+   * @param data.kwargs
+   * @param data.requestBody
+   * @returns LLMConfigPublic Successful Response
+   * @throws ApiError
+   */
+  public static updateUserLlmConfig(
+    data: LlmConfigsUpdateUserLlmConfigData,
+  ): CancelablePromise<LlmConfigsUpdateUserLlmConfigResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/llm-configs/{llm_id}",
+      path: {
+        llm_id: data.llmId,
+      },
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete User Llm Config
+   * 删除LLM配置
+   * @param data The data for the request.
+   * @param data.llmId
+   * @param data.args
+   * @param data.kwargs
+   * @returns string Successful Response
+   * @throws ApiError
+   */
+  public static deleteUserLlmConfig(
+    data: LlmConfigsDeleteUserLlmConfigData,
+  ): CancelablePromise<LlmConfigsDeleteUserLlmConfigResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/llm-configs/{llm_id}",
+      path: {
+        llm_id: data.llmId,
+      },
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Get Llm Models
+   * 获取LLM配置下的所有模型
+   * @param data The data for the request.
+   * @param data.llmId
+   * @param data.args
+   * @param data.kwargs
+   * @param data.skip
+   * @param data.limit
+   * @returns ModelsPublic Successful Response
+   * @throws ApiError
+   */
+  public static getLlmModels(
+    data: LlmConfigsGetLlmModelsData,
+  ): CancelablePromise<LlmConfigsGetLlmModelsResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/llm-configs/{llm_id}/models",
+      path: {
+        llm_id: data.llmId,
+      },
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Llm Model
+   * 为LLM配置创建新模型
+   * @param data The data for the request.
+   * @param data.llmId
+   * @param data.args
+   * @param data.kwargs
+   * @param data.requestBody
+   * @returns ModelPublic Successful Response
+   * @throws ApiError
+   */
+  public static createLlmModel(
+    data: LlmConfigsCreateLlmModelData,
+  ): CancelablePromise<LlmConfigsCreateLlmModelResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/llm-configs/{llm_id}/models",
+      path: {
+        llm_id: data.llmId,
+      },
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Llm Model
+   * 更新模型
+   * @param data The data for the request.
+   * @param data.llmId
+   * @param data.modelId
+   * @param data.args
+   * @param data.kwargs
+   * @param data.requestBody
+   * @returns ModelPublic Successful Response
+   * @throws ApiError
+   */
+  public static updateLlmModel(
+    data: LlmConfigsUpdateLlmModelData,
+  ): CancelablePromise<LlmConfigsUpdateLlmModelResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/llm-configs/{llm_id}/models/{model_id}",
+      path: {
+        llm_id: data.llmId,
+        model_id: data.modelId,
+      },
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Llm Model
+   * 删除模型
+   * @param data The data for the request.
+   * @param data.llmId
+   * @param data.modelId
+   * @param data.args
+   * @param data.kwargs
+   * @returns string Successful Response
+   * @throws ApiError
+   */
+  public static deleteLlmModel(
+    data: LlmConfigsDeleteLlmModelData,
+  ): CancelablePromise<LlmConfigsDeleteLlmModelResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/llm-configs/{llm_id}/models/{model_id}",
+      path: {
+        llm_id: data.llmId,
+        model_id: data.modelId,
+      },
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
       },
       errors: {
         422: "Validation Error",
@@ -270,10 +821,163 @@ export class LoginService {
   }
 }
 
+export class MessagesService {
+  /**
+   * Get Conversation Messages
+   * 获取对话中的所有消息
+   * @param data The data for the request.
+   * @param data.conversationId
+   * @param data.args
+   * @param data.kwargs
+   * @param data.skip
+   * @param data.limit
+   * @returns MessagesPublic Successful Response
+   * @throws ApiError
+   */
+  public static getConversationMessages(
+    data: MessagesGetConversationMessagesData,
+  ): CancelablePromise<MessagesGetConversationMessagesResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/messages/conversation/{conversation_id}",
+      path: {
+        conversation_id: data.conversationId,
+      },
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create New Message
+   * 创建新消息
+   * @param data The data for the request.
+   * @param data.args
+   * @param data.kwargs
+   * @param data.requestBody
+   * @returns MessagePublic Successful Response
+   * @throws ApiError
+   */
+  public static createNewMessage(
+    data: MessagesCreateNewMessageData,
+  ): CancelablePromise<MessagesCreateNewMessageResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/messages/",
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Get Message
+   * 获取指定消息
+   * @param data The data for the request.
+   * @param data.messageId
+   * @param data.args
+   * @param data.kwargs
+   * @returns MessagePublic Successful Response
+   * @throws ApiError
+   */
+  public static getMessage(
+    data: MessagesGetMessageData,
+  ): CancelablePromise<MessagesGetMessageResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/messages/{message_id}",
+      path: {
+        message_id: data.messageId,
+      },
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update User Message
+   * 更新消息（通常只允许编辑自己发送的消息）
+   * @param data The data for the request.
+   * @param data.messageId
+   * @param data.args
+   * @param data.kwargs
+   * @param data.requestBody
+   * @returns MessagePublic Successful Response
+   * @throws ApiError
+   */
+  public static updateUserMessage(
+    data: MessagesUpdateUserMessageData,
+  ): CancelablePromise<MessagesUpdateUserMessageResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/messages/{message_id}",
+      path: {
+        message_id: data.messageId,
+      },
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete User Message
+   * 删除消息（软删除）
+   * @param data The data for the request.
+   * @param data.messageId
+   * @param data.args
+   * @param data.kwargs
+   * @returns string Successful Response
+   * @throws ApiError
+   */
+  public static deleteUserMessage(
+    data: MessagesDeleteUserMessageData,
+  ): CancelablePromise<MessagesDeleteUserMessageResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/messages/{message_id}",
+      path: {
+        message_id: data.messageId,
+      },
+      query: {
+        args: data.args,
+        kwargs: data.kwargs,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
+
 export class UsersService {
   /**
    * Read Users
-   * Retrieve users.
+   * Retrieve users.s
    * @param data The data for the request.
    * @param data.skip
    * @param data.limit
@@ -285,7 +989,7 @@ export class UsersService {
   ): CancelablePromise<UsersReadUsersResponse> {
     return __request(OpenAPI, {
       method: "GET",
-      url: "/api/v1/users/",
+      url: "/api/v1/users/users/",
       query: {
         skip: data.skip,
         limit: data.limit,
@@ -309,7 +1013,7 @@ export class UsersService {
   ): CancelablePromise<UsersCreateUserResponse> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/api/v1/users/",
+      url: "/api/v1/users/users/",
       body: data.requestBody,
       mediaType: "application/json",
       errors: {
@@ -327,7 +1031,7 @@ export class UsersService {
   public static readUserMe(): CancelablePromise<UsersReadUserMeResponse> {
     return __request(OpenAPI, {
       method: "GET",
-      url: "/api/v1/users/me",
+      url: "/api/v1/users/users/me",
     })
   }
 
@@ -340,7 +1044,7 @@ export class UsersService {
   public static deleteUserMe(): CancelablePromise<UsersDeleteUserMeResponse> {
     return __request(OpenAPI, {
       method: "DELETE",
-      url: "/api/v1/users/me",
+      url: "/api/v1/users/users/me",
     })
   }
 
@@ -357,7 +1061,7 @@ export class UsersService {
   ): CancelablePromise<UsersUpdateUserMeResponse> {
     return __request(OpenAPI, {
       method: "PATCH",
-      url: "/api/v1/users/me",
+      url: "/api/v1/users/users/me",
       body: data.requestBody,
       mediaType: "application/json",
       errors: {
@@ -379,7 +1083,7 @@ export class UsersService {
   ): CancelablePromise<UsersUpdatePasswordMeResponse> {
     return __request(OpenAPI, {
       method: "PATCH",
-      url: "/api/v1/users/me/password",
+      url: "/api/v1/users/users/me/password",
       body: data.requestBody,
       mediaType: "application/json",
       errors: {
@@ -401,7 +1105,7 @@ export class UsersService {
   ): CancelablePromise<UsersRegisterUserResponse> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/api/v1/users/signup",
+      url: "/api/v1/users/users/signup",
       body: data.requestBody,
       mediaType: "application/json",
       errors: {
@@ -423,7 +1127,7 @@ export class UsersService {
   ): CancelablePromise<UsersReadUserByIdResponse> {
     return __request(OpenAPI, {
       method: "GET",
-      url: "/api/v1/users/{user_id}",
+      url: "/api/v1/users/users/{user_id}",
       path: {
         user_id: data.userId,
       },
@@ -447,7 +1151,7 @@ export class UsersService {
   ): CancelablePromise<UsersUpdateUserResponse> {
     return __request(OpenAPI, {
       method: "PATCH",
-      url: "/api/v1/users/{user_id}",
+      url: "/api/v1/users/users/{user_id}",
       path: {
         user_id: data.userId,
       },
@@ -472,7 +1176,7 @@ export class UsersService {
   ): CancelablePromise<UsersDeleteUserResponse> {
     return __request(OpenAPI, {
       method: "DELETE",
-      url: "/api/v1/users/{user_id}",
+      url: "/api/v1/users/users/{user_id}",
       path: {
         user_id: data.userId,
       },

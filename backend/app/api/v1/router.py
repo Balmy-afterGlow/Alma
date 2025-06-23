@@ -10,6 +10,7 @@ from app.api.v1.endpoints import (
     messages,
     users,
     utils,
+    websocket_chat,
 )
 
 api_router = APIRouter()
@@ -26,3 +27,4 @@ api_router.include_router(
 )
 api_router.include_router(messages.router, prefix="/messages", tags=["messages"])
 api_router.include_router(chat.router, prefix="/chat", tags=["chat"])
+api_router.include_router(websocket_chat.router, prefix="/ws", tags=["websocket"])

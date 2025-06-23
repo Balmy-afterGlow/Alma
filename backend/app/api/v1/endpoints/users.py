@@ -14,7 +14,6 @@ from app.core.security import get_password_hash, verify_password
 from app.db import repository as crud
 from app.models import User
 from app.schemas import (
-    Message,
     UpdatePassword,
     UserCreate,
     UserPublic,
@@ -24,6 +23,12 @@ from app.schemas import (
     UserUpdateMe,
 )
 from app.utils.email import generate_new_account_email, send_email
+from pydantic import BaseModel
+
+
+class Message(BaseModel):
+    message: str
+
 
 router = APIRouter(prefix="/users", tags=["users"])
 
